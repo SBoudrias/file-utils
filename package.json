@@ -6,7 +6,9 @@
   "directories": {
     "test": "tests"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "grunt test"
+  },
   "license": "MIT",
   "dependencies": {
     "lodash": "~2.1.0",

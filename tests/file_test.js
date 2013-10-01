@@ -1,7 +1,6 @@
 'use strict';
 
-var File = require('../lib/file');
-var file = new File();
+var file = require('..');
 
 var fs = require('fs');
 var path = require('path');
@@ -545,7 +544,7 @@ exports['file'] = {
   },
   'delete': function(test) {
     test.expect(2);
-    var oldBase = process.cwd();
+    var oldBase = file.fromBase();
     var cwd = path.resolve(tmpdir.path, 'delete', 'folder');
     file.mkdir(cwd);
     file.setBase(tmpdir.path);
@@ -566,9 +565,9 @@ exports['file'] = {
   },
   'delete outside working directory': function(test) {
     test.expect(3);
-    var oldBase = process.cwd();
-    var oldWarn = file.fail.warn;
-    file.fail.warn = function() {};
+    var oldBase = file.fromBase();
+    var oldWarn = file.log.warn;
+    file.log.warn = function() {};
 
     var cwd = path.resolve(tmpdir.path, 'delete', 'folder');
     var outsidecwd = path.resolve(tmpdir.path, 'delete', 'outsidecwd');
@@ -583,14 +582,14 @@ exports['file'] = {
     test.equal(file.exists(outsidecwd), false, 'file outside cwd should have been deleted when using the --force.');
 
     file.setBase(oldBase);
-    file.fail.warn = oldWarn;
+    file.log.warn = oldWarn;
     test.done();
   },
   'dont delete current working directory': function(test) {
     test.expect(2);
-    var oldBase = process.cwd();
-    var oldWarn = file.fail.warn;
-    file.fail.warn = function() {};
+    var oldBase = file.fromBase();
+    var oldWarn = file.log.warn;
+    file.log.warn = function() {};
 
     var cwd = path.resolve(tmpdir.path, 'dontdelete', 'folder');
     file.mkdir(cwd);
@@ -600,14 +599,14 @@ exports['file'] = {
     test.ok(file.exists(cwd), 'the cwd should exist.');
 
     file.setBase(oldBase);
-    file.fail.warn = oldWarn;
+    file.log.warn = oldWarn;
     test.done();
   },
   'dont actually delete with no-write option on': function(test) {
     test.expect(2);
     file.option('write', false);
 
-    var oldBase = process.cwd();
+    var oldBase = file.fromBase();
     var cwd = path.resolve(tmpdir.path, 'dontdelete', 'folder');
     file.mkdir(cwd);
     file.setBase(tmpdir.path);
@@ -662,7 +661,7 @@ exports['file'] = {
   'exists': function(test) {
     test.expect(6);
     test.ok(file.exists('tests/fixtures/octocat.png'), 'files exist.');
-    test.ok(file.exists('test', 'fixtures', 'octocat.png'), 'should work for paths in parts.');
+    test.ok(file.exists('tests', 'fixtures', 'octocat.png'), 'should work for paths in parts.');
     test.ok(file.exists('tests/fixtures'), 'directories exist.');
     test.ok(file.exists(path.join(tmpdir.path, 'octocat.png')), 'file links exist.');
     test.ok(file.exists(path.join(tmpdir.path, 'expand')), 'directory links exist.');
@@ -683,7 +682,7 @@ exports['file'] = {
     test.expect(6);
     test.equals(file.isDir('tests/fixtures/octocat.png'), false, 'files are not directories.');
     test.ok(file.isDir('tests/fixtures'), 'directories are directories.');
-    test.ok(file.isDir('test', 'fixtures'), 'should work for paths in parts.');
+    test.ok(file.isDir('tests', 'fixtures'), 'should work for paths in parts.');
     test.equals(file.isDir(path.join(tmpdir.path, 'octocat.png')), false, 'file links are not directories.');
     test.ok(file.isDir(path.join(tmpdir.path, 'expand')), 'directory links are directories.');
     test.equals(file.isDir('tests/fixtures/does/not/exist'), false, 'nonexistent files are not directories.');
@@ -692,7 +691,7 @@ exports['file'] = {
   'isFile': function(test) {
     test.expect(6);
     test.ok(file.isFile('tests/fixtures/octocat.png'), 'files are files.');
-    test.ok(file.isFile('test', 'fixtures', 'octocat.png'), 'should work for paths in parts.');
+    test.ok(file.isFile('tests', 'fixtures', 'octocat.png'), 'should work for paths in parts.');
     test.equals(file.isFile('tests/fixtures'), false, 'directories are not files.');
     test.ok(file.isFile(path.join(tmpdir.path, 'octocat.png')), 'file links are files.');
     test.equals(file.isFile(path.join(tmpdir.path, 'expand')), false, 'directory links are not files.');
@@ -731,7 +730,7 @@ exports['file'] = {
     test.expect(8);
     test.ok(file.isPathCwd(process.cwd()), 'cwd is cwd');
     test.ok(file.isPathCwd('.'), 'cwd is cwd');
-    test.equal(file.isPathCwd('test'), false, 'subdirectory is not cwd');
+    test.equal(file.isPathCwd('tests'), false, 'subdirectory is not cwd');
     test.equal(file.isPathCwd(path.resolve('test')), false, 'subdirectory is not cwd');
     test.equal(file.isPathCwd('..'), false, 'parent is not cwd');
     test.equal(file.isPathCwd(path.resolve('..')), false, 'parent is not cwd');
@@ -743,8 +742,8 @@ exports['file'] = {
     test.expect(8);
     test.equal(file.isPathInCwd(process.cwd()), false, 'cwd is not IN cwd');
     test.equal(file.isPathInCwd('.'), false, 'cwd is not IN cwd');
-    test.ok(file.isPathInCwd('test'), 'subdirectory is in cwd');
-    test.ok(file.isPathInCwd(path.resolve('test')), 'subdirectory is in cwd');
+    test.ok(file.isPathInCwd('tests'), 'subdirectory is in cwd');
+    test.ok(file.isPathInCwd(path.resolve('tests')), 'subdirectory is in cwd');
     test.equal(file.isPathInCwd('..'), false, 'parent is not in cwd');
     test.equal(file.isPathInCwd(path.resolve('..')), false, 'parent is not in cwd');
     test.equal(file.isPathInCwd('/'), false, 'root is not in cwd (I hope)');
