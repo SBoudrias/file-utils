@@ -12,7 +12,7 @@ var tmpdir = new Tempdir();
 fs.symlinkSync(path.resolve('tests/fixtures/octocat.png'), path.join(tmpdir.path, 'octocat.png'), 'file');
 fs.symlinkSync(path.resolve('tests/fixtures/expand'), path.join(tmpdir.path, 'expand'), 'dir');
 
-exports['file'] = {
+exports['filesystem querying methods'] = {
   'exists': function(test) {
     test.expect(6);
     test.ok(fquery.exists('tests/fixtures/octocat.png'), 'files exist.');
