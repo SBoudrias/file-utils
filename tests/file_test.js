@@ -371,13 +371,13 @@ exports['file'] = {
   },
   'read': function(test) {
     test.expect(5);
-    test.strictEqual(file.read('tests/fixtures/utf8.txt'), this.string, 'file should be read as utf8 by default.');
-    test.strictEqual(file.read('tests/fixtures/iso-8859-1.txt', {encoding: 'iso-8859-1'}), this.string, 'file should be read using the specified encoding.');
+    test.strictEqual(file.read('tests/fixtures/utf8.txt').replace(/\r\n/g, '\n'), this.string, 'file should be read as utf8 by default.');
+    test.strictEqual(file.read('tests/fixtures/iso-8859-1.txt', {encoding: 'iso-8859-1'}).replace(/\r\n/g, '\n'), this.string, 'file should be read using the specified encoding.');
     test.ok(compareBuffers(file.read('tests/fixtures/octocat.png', {encoding: null}), fs.readFileSync('tests/fixtures/octocat.png')), 'file should be read as a buffer if encoding is specified as null.');
     test.strictEqual(file.read('tests/fixtures/BOM.txt'), 'foo', 'file should have BOM stripped.');
 
     file.option('encoding', 'iso-8859-1');
-    test.strictEqual(file.read('tests/fixtures/iso-8859-1.txt'), this.string, 'changing the default encoding should work.');
+    test.strictEqual(file.read('tests/fixtures/iso-8859-1.txt').replace(/\r\n/g, '\n'), this.string, 'changing the default encoding should work.');
     test.done();
   },
   'readJSON': function(test) {
@@ -456,13 +456,13 @@ exports['file'] = {
     tmpfile = new Tempfile();
     file.copy('tests/fixtures/utf8.txt', tmpfile.path, {
       process: function(src, filepath) {
-        test.equal(filepath, 'tests/fixtures/utf8.txt', 'filepath should be passed in, as-specified.');
+        test.equal(filepath.replace(/\\/g, '/'), 'tests/fixtures/utf8.txt', 'filepath should be passed in, as-specified.');
         test.equal(Buffer.isBuffer(src), false, 'when no encoding is specified, use default encoding and process src as a string');
         test.equal(typeof src, 'string', 'when no encoding is specified, use default encoding and process src as a string');
         return 'føø' + src + 'bår';
       }
     });
-    test.equal(file.read(tmpfile.path), 'føø' + this.string + 'bår', 'file should be saved as properly encoded processed string.');
+    test.equal(file.read(tmpfile.path).replace(/\r\n/g, '\n'), 'føø' + this.string + 'bår', 'file should be saved as properly encoded processed string.');
     tmpfile.unlinkSync();
 
     tmpfile = new Tempfile();
@@ -474,7 +474,7 @@ exports['file'] = {
         return 'føø' + src + 'bår';
       }
     });
-    test.equal(file.read(tmpfile.path, {encoding: 'iso-8859-1'}), 'føø' + this.string + 'bår', 'file should be saved as properly encoded processed string.');
+    test.equal(file.read(tmpfile.path, {encoding: 'iso-8859-1'}).replace(/\r\n/g, '\n'), 'føø' + this.string + 'bår', 'file should be saved as properly encoded processed string.');
     tmpfile.unlinkSync();
 
     tmpfile = new Tempfile();
@@ -485,7 +485,7 @@ exports['file'] = {
         return new Buffer('føø' + src.toString() + 'bår');
       }
     });
-    test.equal(file.read(tmpfile.path), 'føø' + this.string + 'bår', 'file should be saved as the buffer returned by process.');
+    test.equal(file.read(tmpfile.path).replace(/\r\n/g, '\n'), 'føø' + this.string + 'bår', 'file should be saved as the buffer returned by process.');
     tmpfile.unlinkSync();
 
     file.option('encoding', 'iso-8859-1');
@@ -497,7 +497,7 @@ exports['file'] = {
         return 'føø' + src + 'bår';
       }
     });
-    test.equal(file.read(tmpfile.path), 'føø' + this.string + 'bår', 'file should be saved as properly encoded processed string.');
+    test.equal(file.read(tmpfile.path).replace(/\r\n/g, '\n'), 'føø' + this.string + 'bår', 'file should be saved as properly encoded processed string.');
     tmpfile.unlinkSync();
 
     var filepath = path.join(tmpdir.path, 'should-not-exist.txt');
@@ -519,7 +519,7 @@ exports['file'] = {
         return 'føø' + src + 'bår';
       }
     });
-    test.equal(file.read(tmpfile.path), this.string, 'file should not have been processed.');
+    test.equal(file.read(tmpfile.path).replace(/\r\n/g, '\n'), this.string, 'file should not have been processed.');
     tmpfile.unlinkSync();
 
     ['process', 'noprocess', 'othernoprocess'].forEach(function(filename) {
@@ -533,9 +533,9 @@ exports['file'] = {
         }
       });
       if (filename === 'process') {
-        test.equal(file.read(tmpfile.path), 'føø' + this.string + 'bår', 'file should have been processed.');
+        test.equal(file.read(tmpfile.path).replace(/\r\n/g, '\n'), 'føø' + this.string + 'bår', 'file should have been processed.');
       } else {
-        test.equal(file.read(tmpfile.path), this.string, 'file should not have been processed.');
+        test.equal(file.read(tmpfile.path).replace(/\r\n/g, '\n'), this.string, 'file should not have been processed.');
       }
       tmpfile.unlinkSync();
     }, this);
