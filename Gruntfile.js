@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     nodeunit: {
-      all: ['tests/file_test.js']
+      all: ['tests/**.js', '!tests/fixtures/**']
     },
     jshint: {
       lib: ['lib/**/*.js'],
