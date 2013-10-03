@@ -424,7 +424,7 @@ exports['file'] = {
     file.option('write', false);
     var filepath = path.join(tmpdir.path, 'should-not-exist.txt');
     file.write(filepath, 'test');
-    test.equal(file.exists(filepath), false, 'file should NOT be created if --no-write was specified.');
+    test.equal(file.exists(filepath), false, 'file should NOT be created if `write: false` was specified.');
     test.done();
   },
   'copy': function(test) {
@@ -448,7 +448,7 @@ exports['file'] = {
     file.option('write', false);
     var filepath = path.join(tmpdir.path, 'should-not-exist.txt');
     file.copy('tests/fixtures/utf8.txt', filepath);
-    test.equal(file.exists(filepath), false, 'file should NOT be created if --no-write was specified.');
+    test.equal(file.exists(filepath), false, 'file should NOT be created if `write: false` was specified.');
     test.done();
   },
   'copy and process': function(test) {
@@ -614,7 +614,7 @@ exports['file'] = {
 
     file.write(path.join(cwd, 'test.js'), 'var test;');
     test.ok(file.delete(cwd), 'should return true after not actually deleting file.');
-    test.equal(file.exists(cwd), true, 'file should NOT be deleted if --no-write was specified.');
+    test.equal(file.exists(cwd), true, 'file should NOT be deleted if `write: false` was specified.');
     file.setBase(oldBase);
 
     test.done();
