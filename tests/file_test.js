@@ -545,15 +545,15 @@ exports['file'] = {
   },
   'delete': function(test) {
     test.expect(2);
-    var oldBase = file.fromBase();
+    var oldBase = process.cwd();
     var cwd = path.resolve(tmpdir.path, 'delete', 'folder');
     file.mkdir(cwd);
-    file.setBase(tmpdir.path);
+    process.chdir(tmpdir.path);
 
     file.write(path.join(cwd, 'test.js'), 'var test;');
     test.ok(file.delete(cwd), 'should return true after deleting file.');
     test.equal(file.exists(cwd), false, 'file should have been deleted.');
-    file.setBase(oldBase);
+    process.chdir(oldBase);
     test.done();
   },
   'delete nonexistent file': function(test) {
@@ -566,7 +566,7 @@ exports['file'] = {
   },
   'delete outside working directory': function(test) {
     test.expect(3);
-    var oldBase = file.fromBase();
+    var oldBase = process.cwd();
     var oldWarn = file.log.warn;
     file.log.warn = function() {};
 
@@ -574,7 +574,7 @@ exports['file'] = {
     var outsidecwd = path.resolve(tmpdir.path, 'delete', 'outsidecwd');
     file.mkdir(cwd);
     file.mkdir(outsidecwd);
-    file.setBase(cwd);
+    process.chdir(cwd);
 
     file.write(path.join(outsidecwd, 'test.js'), 'var test;');
     test.equal(file.delete(path.join(outsidecwd, 'test.js')), false, 'should not delete anything outside the cwd.');
@@ -582,24 +582,24 @@ exports['file'] = {
     test.ok(file.delete(path.join(outsidecwd), {force:true}), 'should delete outside cwd when using the --force.');
     test.equal(file.exists(outsidecwd), false, 'file outside cwd should have been deleted when using the --force.');
 
-    file.setBase(oldBase);
+    process.chdir(oldBase);
     file.log.warn = oldWarn;
     test.done();
   },
   'dont delete current working directory': function(test) {
     test.expect(2);
-    var oldBase = file.fromBase();
+    var oldBase = process.cwd();
     var oldWarn = file.log.warn;
     file.log.warn = function() {};
 
     var cwd = path.resolve(tmpdir.path, 'dontdelete', 'folder');
     file.mkdir(cwd);
-    file.setBase(cwd);
+    process.chdir(cwd);
 
     test.equal(file.delete(cwd), false, 'should not delete the cwd.');
     test.ok(file.exists(cwd), 'the cwd should exist.');
 
-    file.setBase(oldBase);
+    process.chdir(oldBase);
     file.log.warn = oldWarn;
     test.done();
   },
@@ -607,15 +607,15 @@ exports['file'] = {
     test.expect(2);
     file.option('write', false);
 
-    var oldBase = file.fromBase();
+    var oldBase = process.cwd();
     var cwd = path.resolve(tmpdir.path, 'dontdelete', 'folder');
     file.mkdir(cwd);
-    file.setBase(tmpdir.path);
+    process.chdir(tmpdir.path);
 
     file.write(path.join(cwd, 'test.js'), 'var test;');
     test.ok(file.delete(cwd), 'should return true after not actually deleting file.');
     test.equal(file.exists(cwd), true, 'file should NOT be deleted if `write: false` was specified.');
-    file.setBase(oldBase);
+    process.chdir(oldBase);
 
     test.done();
   },

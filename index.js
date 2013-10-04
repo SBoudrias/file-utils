@@ -1,8 +1,9 @@
 var _ = require('lodash');
-var Env = require('./lib/file');
+var File = require('./lib/file');
+var Env = require('./lib/env');
 var query = require('./lib/query');
 
-var file = new Env();
+var file = new File();
 _.extend(file, query);
 
 file.glob = require('glob');
