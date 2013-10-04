@@ -1,6 +1,6 @@
 'use strict';
 
-var fquery = require('../lib/query');
+var fquery = require('..');
 
 var fs = require('fs');
 var path = require('path');
