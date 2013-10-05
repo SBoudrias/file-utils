@@ -9,8 +9,7 @@ Same as Grunt.file, this is a set of _synchronous_ utility. As so, it should **n
 ENV scope and filters
 =========
 
-Creating an Env - file#createEnv([ options ]);
----------
+### Creating an Env - file#createEnv([ options ]);
 
 ```javascript
 var file = require('file-utils');
@@ -27,7 +26,7 @@ Write Filters
 
 Write filters are applied on `env.write` and `env.copy`.
 
-### Add a write filter - `env.registerWriteFilter( name, filter )`
+#### Add a write filter - `env.registerWriteFilter( name, filter )`
 
 **options**
 - `name` (String): The name under which registering the filter
@@ -46,7 +45,7 @@ env.registerWriteFilter( 'coffee', function( file ) {
 });
 ```
 
-### Remove a write filter - `env.removeWriteFilter( name )`
+#### Remove a write filter - `env.removeWriteFilter( name )`
 
 ```javascript
 env.removeWriteFilter('coffee');
@@ -58,7 +57,7 @@ File API
 
 Upcoming. Meanwhile, check [Grunt.file documentation](http://gruntjs.com/api/grunt.file).
 
-### Setting options - `file.option( name, [ value ])`
+#### Setting options - `file.option( name, [ value ])`
 
 ```
 // Set option
