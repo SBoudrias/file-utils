@@ -103,3 +103,52 @@ exports['Env()'] = {
     test.done();
   }
 };
+
+exports['Env() write filters'] = {
+  'setUp': function(done) {
+    this.env = file.createEnv();
+    done();
+  },
+  '.registerWriteFilter() and apply output': function(test) {
+    test.expect(3);
+    var env = file.createEnv({ base: tmpdir.path });
+    env.registerWriteFilter('tmp', function(file) {
+      test.equal(file.path, 'foo');
+      test.equal(file.contents, 'bar');
+      return { path: 'simple-filter', contents: 'test' };
+    });
+    env.write('foo', 'bar');
+    var written = env.read('simple-filter');
+    test.equal(written, 'test', 'should have written the filtered file and path');
+    test.done();
+  },
+  'pipe all filters': function(test) {
+    test.expect(4);
+    var env = file.createEnv({ base: tmpdir.path });
+    env.registerWriteFilter('1', function(file) {
+      test.equal(file.path, 'foo');
+      test.equal(file.contents, 'bar');
+      return { path: 'piped-filter', contents: 'test' };
+    });
+    env.registerWriteFilter('2', function(file) {
+      test.equal(file.path, 'piped-filter');
+      test.equal(file.contents, 'test');
+      return file;
+    });
+    env.write('foo', 'bar');
+    test.done();
+  },
+  '.removeWriteFilter()': function(test) {
+    test.expect(1);
+    var env = file.createEnv({ base: tmpdir.path });
+    env.registerWriteFilter('broke', function(file) {
+      test.ok(false);
+      return { path: 'broke', contents: 'broke' };
+    });
+    env.removeWriteFilter('broke');
+    env.write('no-filter', 'bar');
+    var written = env.read('no-filter');
+    test.equal(written, 'bar', 'should have removed the filter');
+    test.done();
+  }
+};
