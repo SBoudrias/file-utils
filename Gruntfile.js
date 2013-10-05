@@ -38,7 +38,7 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
-  grunt.loadNpmTasks('grunt-contrib-bump');
+  grunt.loadNpmTasks('grunt-release');
 
   // "npm test" runs these tasks
   grunt.registerTask('test', ['jshint', 'nodeunit']);
