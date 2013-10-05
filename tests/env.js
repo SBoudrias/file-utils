@@ -3,8 +3,9 @@
 var path = require('path');
 var fs = require('fs');
 var file = require('..');
-var helpers = require('./helpers/helpers');
 var _ = require('lodash');
+var helpers = require('./helpers/helpers');
+var defLogger = require('../lib/logger');
 
 var Tempdir = require('temporary/lib/dir');
 var tmpdir = new Tempdir();
@@ -15,10 +16,16 @@ exports['Env()'] = {
     this.env = file.createEnv({ base: path.join(tmpdir.path, '/env/scope') });
     done();
   },
-  'base option': function(test) {
+  'inherits from global file config': function(test) {
     test.expect(2);
-    test.equal(this.fixtures.option('base'), path.join(__dirname, 'fixtures'));
-    test.equal(this.env.option('base'), path.join(tmpdir.path, '/env/scope'));
+    var logger = { bar: 'foo' };
+    file.option('logger', logger);
+    file.option('write', false);
+    var env = file.createEnv();
+    test.deepEqual(env.option('logger'), logger, 'logger should be inherited');
+    test.equal(env.option('write'), false, 'write state should be inherited');
+    file.option('write', true);
+    file.option('logger', defLogger);
     test.done();
   },
   'read': function(test) {
