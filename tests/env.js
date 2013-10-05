@@ -17,12 +17,13 @@ exports['Env()'] = {
     done();
   },
   'inherits from global file config': function(test) {
-    test.expect(2);
+    test.expect(3);
     var logger = { bar: 'foo' };
     file.option('logger', logger);
     file.option('write', false);
     var env = file.createEnv();
     test.deepEqual(env.option('logger'), logger, 'logger should be inherited');
+    test.deepEqual(env.log, file.log, 'logger should be inherited');
     test.equal(env.option('write'), false, 'write state should be inherited');
     file.option('write', true);
     file.option('logger', defLogger);
