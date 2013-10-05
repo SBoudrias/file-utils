@@ -23,5 +23,20 @@
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-bump": "git://github.com/gruntjs/grunt-contrib-bump#b9bfc07"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/SBoudrias/file-utils.git"
+  },
+  "keywords": [
+    "file",
+    "utils",
+    "scaffold",
+    "tool",
+    "cli"
+  ],
+  "author": "Simon Boudrias",
+  "bugs": {
+    "url": "https://github.com/SBoudrias/file-utils/issues"
   }
 }
