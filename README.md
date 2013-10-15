@@ -9,7 +9,7 @@ Same as Grunt.file, this is a set of _synchronous_ utility. As so, it should **n
 File API
 =========
 
-Upcoming. Meanwhile, check [Grunt.file documentation](http://gruntjs.com/api/grunt.file).
+Upcoming. Meanwhile, check [Grunt.file documentation](http://gruntjs.com/api/grunt.file) as the same methods are available.
 
 #### Setting options - `file.option( name, [ value ])`
 
