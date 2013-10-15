@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     nodeunit: {
-      all: ['tests/**.js', '!tests/fixtures/**', '!tests/helpers/**']
+      all: [ 'tests/**.js', '!tests/fixtures/**', '!tests/helpers/**' ]
     },
     jshint: {
       lib: ['lib/**/*.js'],
@@ -32,12 +32,19 @@ module.exports = function(grunt) {
         eqnull: true,
         node: true,
       }
+    },
+    watch: {
+      tests: {
+        files: '*',
+        tasks: [ 'test' ]
+      }
     }
   });
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-release');
 
   // "npm test" runs these tasks
