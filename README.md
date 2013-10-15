@@ -15,11 +15,16 @@ ENV scope and filters
 var file = require('file-utils');
 
 var env = file.createEnv({
-  base: 'my/scoped/path'
+  base: 'my/scoped/path',
+  dest: 'destination/path' // optionnal
 });
 ```
 
-`file-utils` root module options are inherited by the `Env` instance if not overwritten in the option hash.
+The `base` directory will prefix any paths passed to `mkdir`, `recurse`, `read`, `readJSON`, `write`, `delete` methods.
+
+The `dest` directory will prefix the `destination` path provided in the `copy` method. Note that this option is optionnal and will default to the current working directory.
+
+If options (`logger`, `write`, etc) are not passed, each `Env` instance inherit those of its parent.
 
 Write Filters
 ---------
@@ -131,4 +136,3 @@ Todos
 =========
 
 - Real Logging system
-- Scoping the destination when copying

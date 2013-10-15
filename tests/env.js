@@ -61,6 +61,21 @@ exports['Env()'] = {
 
     test.done();
   },
+  'copy with dest': function(test) {
+    test.expect(1);
+    var dest = path.join(tmpdir.path, '/copy');
+    var env = file.createEnv({
+      base: path.join(__dirname, 'fixtures'),
+      dest: dest
+    });
+
+    env.copy('utf8.txt', 'utf-8.txt');
+
+    var initial = this.fixtures.read('utf8.txt');
+    var copied = fs.readFileSync(dest + '/utf-8.txt', 'utf8');
+    test.strictEqual(initial, copied, 'File should be copied from the root dir to the dest dir');
+    test.done();
+  },
   'delete': function(test) {
     test.expect(3);
     this.env.write('delete.txt', 'foo');
