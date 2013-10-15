@@ -24,7 +24,7 @@ The `base` directory will prefix any paths passed to `mkdir`, `recurse`, `read`,
 
 The `dest` directory will prefix the `destination` path provided in the `copy` method. Note that this option is optionnal and will default to the current working directory.
 
-If options (`logger`, `write`, etc) are not passed, each `Env` instance inherit those of its parent.
+If [options (`logger`, `write`, etc)](#setting-options---fileoption-name--value-) are not passed, each `Env` instance inherit those of its parent.
 
 Write Filters
 ---------
