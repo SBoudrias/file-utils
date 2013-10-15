@@ -166,6 +166,15 @@ exports['Env() filters'] = {
     this.env.write('foo', 'bar');
   },
   '.registerValidationFilter': {
+    'setUp': function(done) {
+      var self = this;
+      this.env.option('logger', _.extend({}, require('../lib/logger'), {
+        error: function(msg) {
+          self.errMsg = msg;
+        }
+      }));
+      done();
+    },
     'passing validation': function(test) {
       test.expect(3);
       this.env.registerValidationFilter('tmp', function(file) {
@@ -180,33 +189,29 @@ exports['Env() filters'] = {
     },
     'failing validation': function(test) {
       test.expect(2);
-      this.env.option('logger', {
-        write: function() {},
-        error: function(msg) {
-          test.equal(msg, 'writing to failing-filter haven\'t pass validation', 'default error message is log');
-        }
-      });
-      this.env.registerValidationFilter('tmp', function(file) {
-        return false;
-      });
+      this.env.registerValidationFilter('tmp', function(file) { return false; });
       this.env.write('failing-filter', 'bar');
       test.ok(!file.exists(this.env.fromBase('failing-filter')), 'should have written the filtered file and path');
+      test.equal(this.errMsg, 'writing to failing-filter haven\'t pass validation', 'default error message is log');
       test.done();
     },
     'failing validation and custom error message': function(test) {
       test.expect(2);
-      this.env.option('logger', {
-        write: function() {},
-        error: function(msg) {
-          test.equal(msg, 'a bad error', 'custom error message is log');
-        }
-      });
-      this.env.registerValidationFilter('tmp', function(file) {
-        return 'a bad error';
-      });
+      this.env.registerValidationFilter('tmp', function(file) { return 'a bad error'; });
       this.env.write('failing-filter', 'bar');
       test.ok(!file.exists(this.env.fromBase('failing-filter')), 'should have written the filtered file and path');
+      test.equal(this.errMsg, 'a bad error', 'custom error message is log');
       test.done();
     }
+  },
+  '.removeValidationFilter': function(test) {
+    test.expect(1);
+    this.env.registerValidationFilter('no-run', function() {
+      test.ok(false, 'shouldn\'t run the filter');
+    });
+    this.env.removeValidationFilter('no-run');
+    this.env.write('removed-validation', 'bar');
+    test.ok(true);
+    test.done();
   }
 };
