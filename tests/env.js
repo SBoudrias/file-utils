@@ -109,7 +109,7 @@ exports['Env() write filters'] = {
     this.env = file.createEnv();
     done();
   },
-  '.registerWriteFilter() and apply output': function(test) {
+  '.registerWriteFilter() synchronous and apply output': function(test) {
     test.expect(3);
     var env = file.createEnv({ base: tmpdir.path });
     env.registerWriteFilter('tmp', function(file) {
@@ -149,6 +149,73 @@ exports['Env() write filters'] = {
     env.write('no-filter', 'bar');
     var written = env.read('no-filter');
     test.equal(written, 'bar', 'should have removed the filter');
+    test.done();
+  },
+  'Async write filter': function(test) {
+    test.expect(2);
+    var env = file.createEnv({ base: tmpdir.path });
+    env._actualWrite = function(filepath, contents) {
+      test.equal(filepath, 'async-write');
+      test.equal(contents, 'puts async');
+      test.done();
+    };
+
+    env.registerWriteFilter('async', function() {
+      var done = this.async();
+      setTimeout(function() {
+        done({ path: 'async-write', contents: 'puts async' });
+      }, 10);
+    });
+
+    env.write('foo', 'bar');
+  },
+  '.registerValidationFilter - passing validation': function(test) {
+    test.expect(3);
+    var env = file.createEnv({ base: tmpdir.path });
+    env.registerValidationFilter('tmp', function(file) {
+      test.equal(file.path, 'foo');
+      test.equal(file.contents, 'bar');
+      return true;
+    });
+    env.write('foo', 'bar');
+    var written = env.read('simple-filter');
+    test.equal(written, 'test', 'should have written the filtered file and path');
+    test.done();
+  },
+  '.registerValidationFilter - failing validation': function(test) {
+    test.expect(2);
+    var env = file.createEnv({
+      base: tmpdir.path,
+      logger: {
+        write: function() {},
+        error: function(msg) {
+          test.equal(msg, 'writing to failing-filter haven\'t pass validation', 'default error message is log');
+        }
+      }
+    });
+    env.registerValidationFilter('tmp', function(file) {
+      return false;
+    });
+    env.write('failing-filter', 'bar');
+    test.ok(!file.exists(env.fromBase('failing-filter')), 'should have written the filtered file and path');
+    test.done();
+  },
+  '.registerValidationFilter - failing validation and custom error message': function(test) {
+    test.expect(2);
+    var env = file.createEnv({
+      base: tmpdir.path,
+      logger: {
+        write: function() {},
+        error: function(msg) {
+          test.equal(msg, 'a bad error', 'custom error message is log');
+        }
+      }
+    });
+    env.registerValidationFilter('tmp', function(file) {
+      return 'a bad error';
+    });
+    env.write('failing-filter', 'bar');
+    test.ok(!file.exists(env.fromBase('failing-filter')), 'should have written the filtered file and path');
     test.done();
   }
 };
