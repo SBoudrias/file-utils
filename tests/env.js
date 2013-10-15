@@ -104,118 +104,109 @@ exports['Env()'] = {
   }
 };
 
-exports['Env() write filters'] = {
+exports['Env() filters'] = {
   'setUp': function(done) {
-    this.env = file.createEnv();
+    this.env = file.createEnv({ base: tmpdir.path });
     done();
   },
   '.registerWriteFilter() synchronous and apply output': function(test) {
     test.expect(3);
-    var env = file.createEnv({ base: tmpdir.path });
-    env.registerWriteFilter('tmp', function(file) {
+    this.env.registerWriteFilter('tmp', function(file) {
       test.equal(file.path, 'foo');
       test.equal(file.contents, 'bar');
       return { path: 'simple-filter', contents: 'test' };
     });
-    env.write('foo', 'bar');
-    var written = env.read('simple-filter');
+    this.env.write('foo', 'bar');
+    var written = this.env.read('simple-filter');
     test.equal(written, 'test', 'should have written the filtered file and path');
     test.done();
   },
   'pipe all filters': function(test) {
     test.expect(4);
-    var env = file.createEnv({ base: tmpdir.path });
-    env.registerWriteFilter('1', function(file) {
+    this.env.registerWriteFilter('1', function(file) {
       test.equal(file.path, 'foo');
       test.equal(file.contents, 'bar');
       return { path: 'piped-filter', contents: 'test' };
     });
-    env.registerWriteFilter('2', function(file) {
+    this.env.registerWriteFilter('2', function(file) {
       test.equal(file.path, 'piped-filter');
       test.equal(file.contents, 'test');
       return file;
     });
-    env.write('foo', 'bar');
+    this.env.write('foo', 'bar');
     test.done();
   },
   '.removeWriteFilter()': function(test) {
     test.expect(1);
-    var env = file.createEnv({ base: tmpdir.path });
-    env.registerWriteFilter('broke', function(file) {
+    this.env.registerWriteFilter('broke', function(file) {
       test.ok(false);
       return { path: 'broke', contents: 'broke' };
     });
-    env.removeWriteFilter('broke');
-    env.write('no-filter', 'bar');
-    var written = env.read('no-filter');
+    this.env.removeWriteFilter('broke');
+    this.env.write('no-filter', 'bar');
+    var written = this.env.read('no-filter');
     test.equal(written, 'bar', 'should have removed the filter');
     test.done();
   },
   'Async write filter': function(test) {
     test.expect(2);
-    var env = file.createEnv({ base: tmpdir.path });
-    env._actualWrite = function(filepath, contents) {
+    this.env._actualWrite = function(filepath, contents) {
       test.equal(filepath, 'async-write');
       test.equal(contents, 'puts async');
       test.done();
     };
 
-    env.registerWriteFilter('async', function() {
+    this.env.registerWriteFilter('async', function() {
       var done = this.async();
       setTimeout(function() {
         done({ path: 'async-write', contents: 'puts async' });
       }, 10);
     });
 
-    env.write('foo', 'bar');
+    this.env.write('foo', 'bar');
   },
-  '.registerValidationFilter - passing validation': function(test) {
-    test.expect(3);
-    var env = file.createEnv({ base: tmpdir.path });
-    env.registerValidationFilter('tmp', function(file) {
-      test.equal(file.path, 'foo');
-      test.equal(file.contents, 'bar');
-      return true;
-    });
-    env.write('foo', 'bar');
-    var written = env.read('simple-filter');
-    test.equal(written, 'test', 'should have written the filtered file and path');
-    test.done();
-  },
-  '.registerValidationFilter - failing validation': function(test) {
-    test.expect(2);
-    var env = file.createEnv({
-      base: tmpdir.path,
-      logger: {
+  '.registerValidationFilter': {
+    'passing validation': function(test) {
+      test.expect(3);
+      this.env.registerValidationFilter('tmp', function(file) {
+        test.equal(file.path, 'foo');
+        test.equal(file.contents, 'bar');
+        return true;
+      });
+      this.env.write('foo', 'bar');
+      var written = this.env.read('simple-filter');
+      test.equal(written, 'test', 'should have written the filtered file and path');
+      test.done();
+    },
+    'failing validation': function(test) {
+      test.expect(2);
+      this.env.option('logger', {
         write: function() {},
         error: function(msg) {
           test.equal(msg, 'writing to failing-filter haven\'t pass validation', 'default error message is log');
         }
-      }
-    });
-    env.registerValidationFilter('tmp', function(file) {
-      return false;
-    });
-    env.write('failing-filter', 'bar');
-    test.ok(!file.exists(env.fromBase('failing-filter')), 'should have written the filtered file and path');
-    test.done();
-  },
-  '.registerValidationFilter - failing validation and custom error message': function(test) {
-    test.expect(2);
-    var env = file.createEnv({
-      base: tmpdir.path,
-      logger: {
+      });
+      this.env.registerValidationFilter('tmp', function(file) {
+        return false;
+      });
+      this.env.write('failing-filter', 'bar');
+      test.ok(!file.exists(this.env.fromBase('failing-filter')), 'should have written the filtered file and path');
+      test.done();
+    },
+    'failing validation and custom error message': function(test) {
+      test.expect(2);
+      this.env.option('logger', {
         write: function() {},
         error: function(msg) {
           test.equal(msg, 'a bad error', 'custom error message is log');
         }
-      }
-    });
-    env.registerValidationFilter('tmp', function(file) {
-      return 'a bad error';
-    });
-    env.write('failing-filter', 'bar');
-    test.ok(!file.exists(env.fromBase('failing-filter')), 'should have written the filtered file and path');
-    test.done();
+      });
+      this.env.registerValidationFilter('tmp', function(file) {
+        return 'a bad error';
+      });
+      this.env.write('failing-filter', 'bar');
+      test.ok(!file.exists(this.env.fromBase('failing-filter')), 'should have written the filtered file and path');
+      test.done();
+    }
   }
 };
