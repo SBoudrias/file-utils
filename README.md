@@ -6,6 +6,28 @@ This is a Grunt.file forks to allow the creation of scoped file utilities and th
 Same as Grunt.file, this is a set of _synchronous_ utility. As so, it should **never** be used on a Node.js server. This is meant for users/command line utilities.
 
 
+File API
+=========
+
+Upcoming. Meanwhile, check [Grunt.file documentation](http://gruntjs.com/api/grunt.file).
+
+#### Setting options - `file.option( name, [ value ])`
+
+```
+// Set option
+file.option('write', false);
+
+// Get option
+file.option('write');
+```
+
+**Available Options**
+- `write` (Boolean): If write is set to `false`, then no file will be written or deleted. Useful for test run without side effets.
+- `logger` (Logger object): Used internally to log information to the console. **API still work in progress**
+- `encoding` (String): Defaults `utf8`. Set the default encoding used for reading/writing. Note most methods allow you to overwridde it for a single run.
+- `force` (Boolean): `force: true` Force the deletion of folders and file outside the utility scope (or CWD if no scope).
+
+
 ENV scope and filters
 =========
 
@@ -109,28 +131,6 @@ Just like the write filters, [this filter can be asynchronous](#async-filter).
 env.removeValidationFilter('checkConflicts');
 ```
 
-
-
-File API
-=========
-
-Upcoming. Meanwhile, check [Grunt.file documentation](http://gruntjs.com/api/grunt.file).
-
-#### Setting options - `file.option( name, [ value ])`
-
-```
-// Set option
-file.option('write', false);
-
-// Get option
-file.option('write');
-```
-
-**Available Options**
-- `write` (Boolean): If write is set to `false`, then no file will be written or deleted. Useful for test run without side effets.
-- `logger` (Logger object): Used internally to log information to the console. **API still work in progress**
-- `encoding` (String): Defaults `utf8`. Set the default encoding used for reading/writing. Note most methods allow you to overwridde it for a single run.
-- `force` (Boolean): `force: true` Force the deletion of folders and file outside the utility scope (or CWD if no scope).
 
 Todos
 =========
