@@ -199,9 +199,23 @@ exports['Env() filters'] = {
       test.expect(2);
       this.env.registerValidationFilter('tmp', function(file) { return 'a bad error'; });
       this.env.write('failing-filter', 'bar');
-      test.ok(!file.exists(this.env.fromBase('failing-filter')), 'should have written the filtered file and path');
+      test.ok(!file.exists(this.env.fromBase('failing-filter')), 'should not have written');
       test.equal(this.errMsg, 'a bad error', 'custom error message is log');
       test.done();
+    },
+    'async validator': function(test) {
+      var self = this;
+      test.expect(1);
+      this.env._actualWrite = function() { test.ok(false, 'should not be call') };
+      this.env.registerValidationFilter('tmp', function(file) {
+        var done = this.async();
+        setTimeout(function() {
+          done('a bad error');
+          test.equal(self.errMsg, 'a bad error', 'custom error message is log');
+          test.done();
+        }, 10);
+      });
+      this.env.write('async-failing-filter', 'bar');
     }
   },
   '.removeValidationFilter': function(test) {

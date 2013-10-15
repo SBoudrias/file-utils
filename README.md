@@ -78,4 +78,3 @@ Todos
 
 - Real Logging system
 - Scoping the destination when copying
-- Async filtering (?)
