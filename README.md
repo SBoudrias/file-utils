@@ -26,6 +26,8 @@ Write Filters
 
 Write filters are applied on `env.write` and `env.copy`.
 
+They're used to modifiy the content or the filepath of a file.
+
 #### Add a write filter - `env.registerWriteFilter( name, filter )`
 
 **options**
@@ -50,6 +52,58 @@ env.registerWriteFilter( 'coffee', function( file ) {
 ```javascript
 env.removeWriteFilter('coffee');
 ```
+
+#### Async filter
+
+The filter can also be asynchronous. This is done by calling `this.async()` and passing the return value to the callback provided.
+
+```javascript
+env.registerWriteFilter( 'coffee', function( file ) {
+  var done = this.async();
+
+  // some process
+  setTimeout(function() {
+    done({ path: '/newfile', contents: 'filtered content' });
+  }, 1000);
+});
+```
+
+**Caution:** Using an asynchronous filter will change the way write and copy method are called to. This will make both of those method to run asynchronously too.
+
+Validation Filters
+----------
+
+Validation filters are applied on `env.write` and `env.copy`.
+
+They're used to allow or disallow the write action.
+
+#### Add a validation filter - `env.registerValidationFilter( name, filter )`
+
+**options**
+- `name` (String): The name under which registering the filter
+- `filter` (Function): The filter function
+
+The filter function take a file object as parameter. This file object is a hash containing a `path` and a `contents` property.
+
+Return `true` to allow the file to be written. Return `false` or an error message `String` to disallow the write action.
+
+```javascript
+env.registerWriteFilter( 'checkConflicts', function( toOutput ) {
+  if ( file.exist(toOutput.path) ) {
+    return 'file is already present';
+  }
+  return true;
+});
+```
+
+Just like the write filters, [this filter can be asynchronous]().
+
+#### Remove a write filter - `env.removeValidationFilter( name )`
+
+```javascript
+env.removeValidationFilter('checkConflicts');
+```
+
 
 
 File API
