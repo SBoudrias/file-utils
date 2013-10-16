@@ -116,6 +116,16 @@ exports['Env()'] = {
 
     test.deepEqual(actual, expected, 'paths and arguments should match.');
     test.done();
+  },
+  'setBase': function(test) {
+    this.env.setBase('foo');
+    test.equal(this.env.fromBase('bar').replace(/\\/g, '/'), 'foo/bar');
+    test.done();
+  },
+  'setDestBase': function(test) {
+    this.env.setDestBase('foo');
+    test.equal(this.env.fromDestBase('bar').replace(/\\/g, '/'), 'foo/bar');
+    test.done();
   }
 };
 
