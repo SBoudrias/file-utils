@@ -184,7 +184,7 @@ exports['Env() filters'] = {
     'setUp': function(done) {
       var self = this;
       this.env.option('logger', _.extend({}, require('../lib/logger'), {
-        error: function(msg) {
+        write: function(msg) {
           self.errMsg = msg;
         }
       }));
@@ -207,7 +207,7 @@ exports['Env() filters'] = {
       this.env.registerValidationFilter('tmp', function(file) { return false; });
       this.env.write('failing-filter', 'bar');
       test.ok(!file.exists(this.env.fromBase('failing-filter')), 'should have written the filtered file and path');
-      test.equal(this.errMsg, 'writing to failing-filter haven\'t pass validation', 'default error message is log');
+      test.equal(this.errMsg, 'Not actually writing to failing-filter haven\'t pass validation', 'default error message is log');
       test.done();
     },
     'failing validation and custom error message': function(test) {
