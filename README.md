@@ -115,7 +115,7 @@ The filter function take a file object as parameter. This file object is a hash 
 Return `true` to allow the file to be written. Return `false` or an error message `String` to disallow the write action.
 
 ```javascript
-env.registerWriteFilter( 'checkConflicts', function( toOutput ) {
+env.registerValidationFilter( 'checkConflicts', function( toOutput ) {
   if ( file.exist(toOutput.path) ) {
     return 'file is already present';
   }
@@ -125,7 +125,7 @@ env.registerWriteFilter( 'checkConflicts', function( toOutput ) {
 
 Just like the write filters, [this filter can be asynchronous](#async-filter).
 
-#### Remove a write filter - `env.removeValidationFilter( name )`
+#### Remove a validation filter - `env.removeValidationFilter( name )`
 
 ```javascript
 env.removeValidationFilter('checkConflicts');
