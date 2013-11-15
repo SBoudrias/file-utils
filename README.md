@@ -110,7 +110,7 @@ They're used to allow or disallow the write action.
 - `name` (String): The name under which registering the filter
 - `filter` (Function): The filter function
 
-The filter function take a file object as parameter. This file object is a hash containing a `path` and a `contents` property.
+The filter function take a file object as parameter. This file object is a hash containing a `path` (String) and a `contents` (String if text file, Buffer otherwise) property.
 
 Return `true` to allow the file to be written. Return `false` or an error message `String` to disallow the write action.
 

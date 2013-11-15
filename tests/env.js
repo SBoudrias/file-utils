@@ -220,6 +220,26 @@ exports['Env() filters'] = {
       test.equal(this.errMsg, 'Not actually writing to failing-filter haven\'t pass validation', 'default error message is log');
       test.done();
     },
+    'validation with text file': function(test) {
+      test.expect(1);
+      this.env.registerValidationFilter('tmp', function(file) {
+        test.ok(typeof file.contents === 'string');
+        test.done();
+        return 'abort';
+      });
+      var textPath = path.join(__dirname, 'fixtures/utf8.txt');
+      this.env.copy(textPath, textPath);
+    },
+    'validation with binary file': function(test) {
+      test.expect(1);
+      this.env.registerValidationFilter('tmp', function(file) {
+        test.ok(file.contents instanceof Buffer);
+        test.done();
+        return 'abort';
+      });
+      var binaryPath = path.join(__dirname, 'fixtures/octocat.png');
+      this.env.copy(binaryPath, binaryPath);
+    },
     'failing validation and custom error message': function(test) {
       test.expect(2);
       this.env.registerValidationFilter('tmp', function(file) { return 'a bad error'; });

@@ -16,7 +16,8 @@
     "rimraf": "~2.2.2",
     "glob": "~3.2.6",
     "minimatch": "~0.2.12",
-    "findup-sync": "~0.1.2"
+    "findup-sync": "~0.1.2",
+    "isbinaryfile": "~0.1.9"
   },
   "devDependencies": {
     "temporary": "~0.0.4",
