@@ -432,23 +432,26 @@ exports['file'] = {
     var tmpfile;
     tmpfile = new Tempfile();
     file.copy('tests/fixtures/utf8.txt', tmpfile.path);
-    test.ok(compareFiles(tmpfile.path, 'tests/fixtures/utf8.txt'), 'files should just be copied as encoding-agnostic by default.');
+    test.ok(compareFiles(tmpfile.path, 'tests/fixtures/utf8.txt'), 'text files should just be copied as default encoding.');
     tmpfile.unlinkSync();
 
     tmpfile = new Tempfile();
+    file.option('encoding', 'iso-8859-1');
     file.copy('tests/fixtures/iso-8859-1.txt', tmpfile.path);
-    test.ok(compareFiles(tmpfile.path, 'tests/fixtures/iso-8859-1.txt'), 'files should just be copied as encoding-agnostic by default.');
+    test.ok(compareFiles(tmpfile.path, 'tests/fixtures/iso-8859-1.txt'), 'text files should just be copied as default encoding.');
     tmpfile.unlinkSync();
+    file.option('encoding', 'utf8');
 
     tmpfile = new Tempfile();
     file.copy('tests/fixtures/octocat.png', tmpfile.path);
-    test.ok(compareFiles(tmpfile.path, 'tests/fixtures/octocat.png'), 'files should just be copied as encoding-agnostic by default.');
+    test.ok(compareFiles(tmpfile.path, 'tests/fixtures/octocat.png'), 'Binary files should be copied as encoding-agnostic by default.');
     tmpfile.unlinkSync();
 
     file.option('write', false);
     var filepath = path.join(tmpdir.path, 'should-not-exist.txt');
     file.copy('tests/fixtures/utf8.txt', filepath);
     test.equal(file.exists(filepath), false, 'file should NOT be created if `write: false` was specified.');
+
     test.done();
   },
   'copy and process': function(test) {
