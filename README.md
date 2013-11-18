@@ -116,7 +116,7 @@ Return `true` to allow the file to be written. Return `false` or an error messag
 
 ```javascript
 env.registerValidationFilter( 'checkConflicts', function( toOutput ) {
-  if ( file.exist(toOutput.path) ) {
+  if ( file.exists(toOutput.path) ) {
     return 'file is already present';
   }
   return true;
