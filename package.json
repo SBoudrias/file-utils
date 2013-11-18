@@ -1,6 +1,6 @@
 {
   "name": "file-utils",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Sync file utility for Node.js command line tools",
   "main": "index.js",
   "directories": {
