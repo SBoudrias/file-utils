@@ -546,6 +546,20 @@ exports['file'] = {
 
     test.done();
   },
+  'copy keep file permissions and time': function(test) {
+    test.expect(3);
+    var tmpfile = new Tempfile();
+    file.copy('tests/fixtures/utf8.txt', tmpfile.path);
+
+    var srcStat = fs.statSync('tests/fixtures/utf8.txt');
+    var destStat = fs.statSync(tmpfile.path);
+
+    test.equal(srcStat.mode, destStat.mode);
+    test.equal(srcStat.atime.getTime(), destStat.atime.getTime());
+    test.equal(srcStat.mtime.getTime(), destStat.mtime.getTime());
+    tmpfile.unlinkSync();
+    test.done();
+  },
   'delete': function(test) {
     test.expect(2);
     var oldBase = process.cwd();
