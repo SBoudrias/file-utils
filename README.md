@@ -42,7 +42,7 @@ var env = file.createEnv({
 });
 ```
 
-The `base` directory will prefix any paths passed to `mkdir`, `recurse`, `read`, `readJSON`, `write`, `delete` methods.
+The `base` directory will prefix any paths passed to `mkdir`, `recurse`, `read`, `readJSON`, `write`, `delete`, `exists`, `isLink`, `isDir` and `isFile` methods.
 
 The `dest` directory will prefix the `destination` path provided in the `copy` method. Note that this option is optionnal and will default to the current working directory.
 
