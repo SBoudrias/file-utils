@@ -40,6 +40,17 @@ var env = file.createEnv({
   base: 'my/scoped/path',
   dest: 'destination/path' // optionnal
 });
+
+// Alternatively, they can be functions returning a path:
+
+var env = file.createEnv({
+  base: function() {
+    return 'my/scoped/path';
+  },
+  dest: function() { // optionnal
+    return 'destination/path';
+  }
+});
 ```
 
 The `base` directory will prefix any paths passed to `mkdir`, `recurse`, `read`, `readJSON`, `write`, `delete`, `exists`, `isLink`, `isDir` and `isFile` methods.
