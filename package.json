@@ -11,20 +11,20 @@
   },
   "license": "MIT",
   "dependencies": {
-    "lodash": "~2.1.0",
+    "lodash": "~2.4.1",
     "iconv-lite": "~0.2.11",
     "rimraf": "~2.2.2",
     "glob": "~3.2.6",
     "minimatch": "~0.2.12",
     "findup-sync": "~0.1.2",
-    "isbinaryfile": "~0.1.9"
+    "isbinaryfile": "~2.0.0"
   },
   "devDependencies": {
     "temporary": "~0.0.4",
-    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-release": "~0.3.3"
+    "grunt-release": "~0.6.0"
   },
   "repository": {
     "type": "git",
