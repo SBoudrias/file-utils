@@ -40,5 +40,8 @@
   "author": "Simon Boudrias",
   "bugs": {
     "url": "https://github.com/SBoudrias/file-utils/issues"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   }
 }
