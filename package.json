@@ -17,7 +17,7 @@
     "glob": "~3.2.6",
     "minimatch": "~0.2.12",
     "findup-sync": "~0.1.2",
-    "isbinaryfile": "~2.0.0"
+    "isbinaryfile": "~2.0.1"
   },
   "devDependencies": {
     "temporary": "~0.0.4",
