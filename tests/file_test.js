@@ -563,6 +563,7 @@ exports['file'] = {
   'delete': function(test) {
     test.expect(2);
     var oldBase = process.cwd();
+    console.log(tmpdir.path);
     var cwd = path.resolve(tmpdir.path, 'delete', 'folder');
     file.mkdir(cwd);
     process.chdir(tmpdir.path);

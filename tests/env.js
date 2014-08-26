@@ -84,6 +84,17 @@ exports['Env()'] = {
     test.ok(!file.exists(path.join(tmpdir.path, '/env/scope', 'delete.txt')), 'file should\'ve been deleted');
     test.done();
   },
+  'delete with function base': function(test) {
+    test.expect(3);
+    this.env.setBase(function () {
+      return path.join(tmpdir.path, '/env/scope');
+    });
+    this.env.write('delete.txt', 'foo');
+    test.ok(file.exists(path.join(tmpdir.path, '/env/scope', 'delete.txt')), 'file should exist');
+    test.ok(this.env.delete('delete.txt'), 'return true if it delete the file');
+    test.ok(!file.exists(path.join(tmpdir.path, '/env/scope', 'delete.txt')), 'file should\'ve been deleted');
+    test.done();
+  },
   'mkdir': function(test) {
     test.expect(2);
 
