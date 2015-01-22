@@ -2,7 +2,6 @@
   "name": "file-utils",
   "version": "0.2.1",
   "description": "Sync file utility for Node.js command line tools",
-  "main": "index.js",
   "directories": {
     "test": "tests"
   },
@@ -11,13 +10,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "findup-sync": "~0.1.2",
-    "glob": "~3.2.6",
-    "iconv-lite": "~0.4.3",
-    "isbinaryfile": "~2.0.1",
-    "lodash": "~2.4.1",
-    "minimatch": "~0.2.12",
-    "rimraf": "~2.2.2"
+    "findup-sync": "^0.2.1",
+    "glob": "^4.3.5",
+    "iconv-lite": "^0.4.3",
+    "isbinaryfile": "^2.0.1",
+    "lodash": "^2.4.1",
+    "minimatch": "^2.0.1",
+    "rimraf": "^2.2.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -25,25 +24,25 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-nodeunit": "^0.4.1",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-release": "^0.7.0",
-    "temporary": "~0.0.4"
+    "grunt-release": "^0.10.0",
+    "temporary": "0.0.8"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/SBoudrias/file-utils.git"
-  },
+  "repository": "SBoudrias/file-utils",
   "keywords": [
     "file",
+    "fs",
     "utils",
+    "util",
     "scaffold",
     "tool",
     "cli"
   ],
   "author": "Simon Boudrias",
-  "bugs": {
-    "url": "https://github.com/SBoudrias/file-utils/issues"
-  },
   "engines": {
     "node": ">=0.10.0"
-  }
+  },
+  "files": [
+    "lib",
+    "index.js"
+  ]
 }
