@@ -230,7 +230,7 @@ exports['file.expand*'] = {
     test.expect(2);
     var opts = {nonull: true};
     test.deepEqual(file.expand(opts, ['js/a*', 'js/b*', 'js/c*']), ['js/a*', 'js/bar.js', 'js/c*'], 'non-matching patterns should be returned in result set.');
-    test.deepEqual(file.expand(opts, ['js/foo.js', 'js/bar.js', 'js/baz.js']), ['js/foo.js', 'js/bar.js', 'js/baz.js'], 'non-matching filenames should be returned in result set.');
+    test.deepEqual(file.expand(opts, ['js/foo.js', 'js/bar.js', 'js/baz.js']), ['js/foo.js', 'js/bar.js'], 'non-matching file name should not be returned');
     test.done();
   },
 };
