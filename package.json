@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "findup-sync": "^0.2.1",
-    "glob": "^4.3.5",
+    "glob": "~7.1.2",
     "iconv-lite": "^0.4.3",
     "isbinaryfile": "^2.0.1",
     "lodash": "^2.4.1",
