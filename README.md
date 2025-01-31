@@ -1,4 +1,4 @@
-file-utils [![](https://travis-ci.org/SBoudrias/file-utils.png)](https://travis-ci.org/SBoudrias/file-utils)
+file-utils
 ==========
 
 This is a Grunt.file forks to allow the creation of scoped file utilities and the ability to add write filters.
